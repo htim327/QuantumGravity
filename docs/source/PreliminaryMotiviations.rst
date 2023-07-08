@@ -370,3 +370,9 @@ Meanwhile, if the number of shots for the uncompressed qubits becomes :math:`$\m
 It is important to remember that these are only partial snapshots of the code expressed above. So there is another part that includes the effective shots of the compressed qubits where the effective shots are calculated with the total number of times that the wave function that stores the compressed qubits collapses to the particular compressed qubit. For the case, where :math:`$\mathrm{nqubits}=3$` and the total number of shots for the uncompressed qubits is :math:`$\mathrm{shots1} = 10000$`, the total number of effective shots for the compressed qubits (with the total number of shots for the uncompressed qubits expressed at the very bottom) becomes:
 
 .. image:: ShotsFornqubitsis3shots1is10000.png
+
+As seen in the image above, the number of effective shots for the compressed qubits stochastically varies around :math:`$\mathrm{shots1} = 10000$`. The same is true for case where :math:`$\mathrm{shots1} = 100000$` as seen in the image below.
+
+.. image:: ShotsFornqubitsis3shots1is100000.png
+
+In addition, if :math:`$\mathrm{nqubits}=4$` and the number of shots for the uncompressed is kept at :math:`$\mathrm{shots1} = 100000$`, the number of effective shots shows the same behavior relative to the number of shots when the number of shots for the compressed qubits is changed to :math:`$\mathrm{shots2} = 2^{\mathrm{nqubits}}\times \mathrm{shots1} = 1600000$`.
