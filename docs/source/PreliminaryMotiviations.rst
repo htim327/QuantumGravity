@@ -376,3 +376,12 @@ As seen in the image above, the number of effective shots for the compressed qub
 .. image:: ShotsFornqubitsis3shots1is100000.png
 
 In addition, if :math:`$\mathrm{nqubits}=4$` and the number of shots for the uncompressed is kept at :math:`$\mathrm{shots1} = 100000$`, the number of effective shots shows the same behavior relative to the number of shots when the number of shots for the compressed qubits is changed to :math:`$\mathrm{shots2} = 2^{\mathrm{nqubits}}\times \mathrm{shots1} = 1600000$`.
+
+.. image:: ShotsFornqubitsis4shots1is100000.png
+
+Discussion
+----------
+
+The miniature study shows that as the amount of space required to store compressed qubits becomes more densely packed (for instance by a factor of two) with these compressed qubits, the total number of shots needed to obtain the same degree of accuracy also increases by the same factor that the density increases (so again, maybe a factor of two). It seems reasonable to equate the behavior of the density of compressed qubits to that of space contraction and to equate the behavior of the total number of shots needed to obtain the same degree of accuracy to that of time dilation. However, it also seems reasonable to have some questions linger about the legitimacy of this approach, which is why the rest of the entire study serves to solidify this logic.
+
+According to this model, there is a limit to how closely packed the compressed qubits (information) can become, which makes the production of a gravitational singularity problematic. As the von Neumann entropy of the qubits comes close to saturation and displays similar behavior to the Bekenstein bound, it seems as though an object like a black hole no longer has the ability to causes masses to gravitate to a region deeper within any kind of gravitational potential. So, it appears as though at the endpoint of the technological singularity, one of the key technologies obtained is a form of nigh impossible to decrypt internet whose information content can increase exponentially with each additional qubit. The random orientiation of the bases of the control qubits causes the decryption difficulty to increase by a factor of :math:`$3^{n_c}$`, where :math:`$n_c$` is the number of control qubits, and the problem gets nuked when considering the rearrangement of the order that the qubits appear in because that causes the difficultof of the problem to increase by a factor of :math:`$2^n!$`, where :math:`$n=n_c$`.
