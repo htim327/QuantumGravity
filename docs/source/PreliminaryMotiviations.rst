@@ -2,7 +2,7 @@
 Preliminary Motivations for 'Quantum Gravity' Research
 ======================================================
 
-This documentation prevents, as the title says, the preliminary motivations for this research on quantum gravity. This code allows for the storage of a set of single qubits in a vector that is much more compressed than it otherwise would be. This works by having a series of control qubits and a single target qubit that store the information of these single qubits. If there is a single control qubit, then the total wave function can store the information of two single qubits according to:
+This documentation presents, as the title says, the preliminary motivations for this research on quantum gravity. This code allows for the storage of a set of single qubits in a vector that is much more compressed than it otherwise would be. This works by having a series of control qubits and a single target qubit that store the information of these single qubits. If there is a single control qubit, then the total wave function can store the information of two single qubits according to:
 
 :math:`$$\Psi_{\mathrm{tot}}^T = [1\ 0]\otimes [a\ b] + [0\ 1]\otimes [c\ d] = [a\ b\ c\ d]$$`
 
@@ -358,3 +358,9 @@ Therefore, as the number of 'compressed' qubits (n) stored in this wave function
    disp(shotcounty)
    disp('Number of samples for the uncompressed qubits is:')
    disp(shots1)
+
+The following image, in order of appearance, the sampled probability of observing the outcomes in the spin down z-direction for the uncompressed and then the compressed qubits, this moves onto the spin up z-direction (again, for the uncompressed and then the compressed qubits), then the spin down x-direction, the spin up x-direction, the spin down y-direction, and then the spin up y-direction. This image uses :math:`$\mathrm{nqubits}=3$` and the number of shots for the uncompressed qubits is :math:`$\mathrm{shots1} = 10000$`, which means that the number of shots for the compressed qubits is :math:`$\mathrm{shots2} = 2^{\mathrm{nqubits}}\times \mathrm{shots1} = 80000$`. As can be seen, the cases closely match for both of the cases of the uncompressed and the compressed qubits.
+
+Meanwhile, if the number of shots for the uncompressed qubits becomes :math:`$\mathrm{shots1} = 100000$` and the number of shots for the compressed qubits becomes :math:`$\mathrm{shots2} = 800000$`, then it shows that the following results have a much higher degree of accuracy.
+
+It is important to remember that these are only partial snapshots of the code expressed above.
