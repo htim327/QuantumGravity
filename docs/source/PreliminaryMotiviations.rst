@@ -361,6 +361,12 @@ Therefore, as the number of 'compressed' qubits (n) stored in this wave function
 
 The following image, in order of appearance, the sampled probability of observing the outcomes in the spin down z-direction for the uncompressed and then the compressed qubits, this moves onto the spin up z-direction (again, for the uncompressed and then the compressed qubits), then the spin down x-direction, the spin up x-direction, the spin down y-direction, and then the spin up y-direction. This image uses :math:`$\mathrm{nqubits}=3$` and the number of shots for the uncompressed qubits is :math:`$\mathrm{shots1} = 10000$`, which means that the number of shots for the compressed qubits is :math:`$\mathrm{shots2} = 2^{\mathrm{nqubits}}\times \mathrm{shots1} = 80000$`. As can be seen, the cases closely match for both of the cases of the uncompressed and the compressed qubits.
 
+.. image:: SampledProbabilityFornqubitsis3shots1is10000.png
+
 Meanwhile, if the number of shots for the uncompressed qubits becomes :math:`$\mathrm{shots1} = 100000$` and the number of shots for the compressed qubits becomes :math:`$\mathrm{shots2} = 800000$`, then it shows that the following results have a much higher degree of accuracy.
 
-It is important to remember that these are only partial snapshots of the code expressed above.
+.. image:: SampledProbabilityFornqubitsis3shots1is100000.png
+
+It is important to remember that these are only partial snapshots of the code expressed above. So there is another part that includes the effective shots of the compressed qubits where the effective shots are calculated with the total number of times that the wave function that stores the compressed qubits collapses to the particular compressed qubit. For the case, where :math:`$\mathrm{nqubits}=3$` and the total number of shots for the uncompressed qubits is :math:`$\mathrm{shots1} = 10000$`, the total number of effective shots for the compressed qubits (with the total number of shots for the uncompressed qubits expressed at the very bottom) becomes:
+
+.. image:: ShotsFornqubitsis3shots1is10000.png
