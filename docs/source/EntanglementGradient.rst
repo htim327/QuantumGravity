@@ -536,3 +536,78 @@ This uses the function FastTwoDxyHamiltonians.m, which generates the Hamiltonian
     Vel1 = V1;
     Vel3 = V3;
     end
+
+An additional helper function named ReducedDensity.m is used to calculate the reduced density matrix and thereby, effectively remove the additional qubit.
+
+.. code-block:: matlab
+
+    function [rdensity] = ReducedDensity(densityi,size,targets)
+    % This function takes the density matrix densityi composed of size qubits
+    % and calculates the reduced density matrix for the qubits given by targets
+    % and returns this reduced density matrix as rdensity
+    %%%
+    % Determine the number of qubits that compose targets
+    nq = length(targets);
+    % Determine the number of qubits in densityi that are not going to compose
+    % the outputted reduced density matrix
+    nq2 = size - nq;
+    % Initialize the matrix that will store the reduced density matrix
+    redden = zeros(2^nq);
+    % Iterate over all possible configurations of the qubits that will not
+    % compose the reduced density matrix
+    for i = 0:(2^nq2-1)
+        % Express the number for the current iteration as a bitstring of length
+        % nq2
+        const = dec2bin(i);
+        const2 = nq2 - length(const);
+        for j = 1:const2
+            const = ['0' const];
+        end
+        % count is used to determine how far across the bitstring we have gone
+        % when using the information in the bitstring to generate the matrix
+        % opmat that will be used to create the reduced density matrix.
+        count = 0;
+        % If 1 is an entry of targets, then make the first matrix that composes
+        % the set of Kronecker products that generates opmat be the 2 by 2
+        % identity matrix
+        if sum(1==targets)
+            opmat = eye(2);
+        else
+        % Otherwise make the first matrix that composes this set of Kronecker
+        % products be the appropriate single qubit spin vector
+            count = count+1;
+            if (const(count)=='1')
+                opmat = [0; 1];
+            else
+                opmat = [1; 0];
+            end
+        end
+        % Iterate through all of the rest of the qubits (both the target qubits
+        % for the reduced density matrix as well as all of the other qubits)
+        % and determine whether the next matrix in the set of Kronecker
+        % products should be an identity matrix or the spin up or down state
+        % vector. If the qubit of interest is a target qubit for the reduced
+        % density matrix then use the identity matrix otherwise use the
+        % appropriate state vector.
+        for j = 2:size
+            if sum(j==targets)
+                opmat = kron(opmat,eye(2));
+            else
+                count = count + 1;
+                if (const(count)=='1')
+                    opmat = kron(opmat,[0; 1]);
+                else
+                    opmat = kron(opmat,[1; 0]);
+                end
+            end
+        end
+        % Use opmat to perform operations on densityi in order to obtain the
+        % appropriate information about the reduced density matrix and add this
+        % information to redden.
+        redden = redden + ctranspose(opmat)*densityi*opmat;
+    end
+    % Normalize redden
+    redden = redden/trace(abs(redden));
+    % Return the reduced density matrix as rdensity
+    rdensity = redden;
+    end
