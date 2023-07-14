@@ -474,3 +474,65 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     end
     save('jprobsa.mat','jprobsa')
     save('jprobsb.mat','jprobsb')
+
+This uses the function FastTwoDxyHamiltonians.m, which generates the Hamiltonians that implement the five driving steps. This function is presented as follows:
+
+.. code-block:: matlab
+
+    function [Ham1, Ham2, Ham3, Ham4, Ham5, Vel1, Vel3] = FastTwoDxyHamiltonians(Li,Lj,J,del)
+    % This function generates the Hamiltonians that implement the five step
+    % Floquet drive as well as the velocity matrices that are used to measure
+    % the topological current during the first and third driving steps. The
+    % system is defined by Li sites in the x-direction and Lj sites in the
+    % y-direction, the hopping strength is given by J, and the strength of the
+    % on-site potential implemented during step 5 is given by del.
+    %%%
+    % Define the total number of sites that defines the system with LSquared
+    LSquared = 2*Li*Lj;
+    % Initialize all of the Hamiltonians and the velocity matrices as matrices
+    % of zeros
+    Muy = zeros(LSquared);
+    H1 = Muy;
+    H2 = Muy;
+    H3 = Muy;
+    H4 = Muy;
+    H5 = Muy;
+    V1 = Muy;
+    V3 = Muy;
+    % Populate all of the Hamiltonians and the velocity matrices in the
+    % appropriate locations such that they perform that actions they were
+    % intended to.
+    for i = 2:2:LSquared
+        H1(i,(i-1)) = -J;
+        H1((i-1),i) = -J;
+        V1((i-1),i) = -1i*J;
+        V1(i,(i-1)) = 1i*J;
+    end
+    clear i
+    for i = 0:(Li-1)
+        for j = 0:(Lj-2)
+            H2((2+2*i+2*Li*(j+1)),(1+2*rem((i+1),Li)+2*Li*j)) = -J;
+            H2((1+2*rem((i+1),Li)+2*Li*j),(2+2*i+2*Li*(j+1))) = -J;
+            H4((2+2*i+2*Li*j),(1+2*i+2*Li*(j+1))) = -J;
+            H4((1+2*i+2*Li*(j+1)),(2+2*i+2*Li*j)) = -J;
+        end
+        clear j
+        for j = 0:(Lj-1)
+            H3((1+2*rem((i+1),Li)+2*Li*j),(2+2*i+2*Li*j)) = -J;
+            H3((2+2*i+2*Li*j),(1+2*rem((i+1),Li)+2*Li*j)) = -J;
+            V3((1+2*rem((i+1),Li)+2*Li*j),(2+2*i+2*Li*j)) = -1i*J;
+            V3((2+2*i+2*Li*j),(1+2*rem((i+1),Li)+2*Li*j)) = 1i*J;
+        end
+    end
+    for k = 1:LSquared
+        H5(k,k) = ((-1)^(k-1))*del;
+    end
+    % Give the results as output.
+    Ham1 = H1;
+    Ham2 = H2;
+    Ham3 = H3;
+    Ham4 = H4;
+    Ham5 = H5;
+    Vel1 = V1;
+    Vel3 = V3;
+    end
