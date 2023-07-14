@@ -87,3 +87,142 @@ The following code presents a method where the time evolution of each driving st
        hold off
        title(['Probability of Occupying J-index ' num2str(i)],'FontSize',40,'Interpreter','latex')
    end
+
+The code above runs TwoDimxyQ.m, which is the main file that actually runs the simulation for each noise realization. This code is presented below:
+
+This uses the function FastTwoDxyHamiltonians.m, which generates the Hamiltonians that implement the five driving steps. This function is presented as follows:
+
+.. code-block:: matlab
+
+    function [Ham1, Ham2, Ham3, Ham4, Ham5, Vel1, Vel3] = FastTwoDxyHamiltonians(Li,Lj,J,del)
+    % This function generates the Hamiltonians that implement the five step
+    % Floquet drive as well as the velocity matrices that are used to measure
+    % the topological current during the first and third driving steps. The
+    % system is defined by Li sites in the x-direction and Lj sites in the
+    % y-direction, the hopping strength is given by J, and the strength of the
+    % on-site potential implemented during step 5 is given by del.
+    %%%
+    % Define the total number of sites that defines the system with LSquared
+    LSquared = 2*Li*Lj;
+    % Initialize all of the Hamiltonians and the velocity matrices as matrices
+    % of zeros
+    Muy = zeros(LSquared);
+    H1 = Muy;
+    H2 = Muy;
+    H3 = Muy;
+    H4 = Muy;
+    H5 = Muy;
+    V1 = Muy;
+    V3 = Muy;
+    % Populate all of the Hamiltonians and the velocity matrices in the
+    % appropriate locations such that they perform that actions they were
+    % intended to.
+    for i = 2:2:LSquared
+        H1(i,(i-1)) = -J;
+        H1((i-1),i) = -J;
+        V1((i-1),i) = -1i*J;
+        V1(i,(i-1)) = 1i*J;
+    end
+    clear i
+    for i = 0:(Li-1)
+        for j = 0:(Lj-2)
+            H2((2+2*i+2*Li*(j+1)),(1+2*rem((i+1),Li)+2*Li*j)) = -J;
+            H2((1+2*rem((i+1),Li)+2*Li*j),(2+2*i+2*Li*(j+1))) = -J;
+            H4((2+2*i+2*Li*j),(1+2*i+2*Li*(j+1))) = -J;
+            H4((1+2*i+2*Li*(j+1)),(2+2*i+2*Li*j)) = -J;
+        end
+        clear j
+        for j = 0:(Lj-1)
+            H3((1+2*rem((i+1),Li)+2*Li*j),(2+2*i+2*Li*j)) = -J;
+            H3((2+2*i+2*Li*j),(1+2*rem((i+1),Li)+2*Li*j)) = -J;
+            V3((1+2*rem((i+1),Li)+2*Li*j),(2+2*i+2*Li*j)) = -1i*J;
+            V3((2+2*i+2*Li*j),(1+2*rem((i+1),Li)+2*Li*j)) = 1i*J;
+        end
+    end
+    for k = 1:LSquared
+        H5(k,k) = ((-1)^(k-1))*del;
+    end
+    % Give the results as output.
+    Ham1 = H1;
+    Ham2 = H2;
+    Ham3 = H3;
+    Ham4 = H4;
+    Ham5 = H5;
+    Vel1 = V1;
+    Vel3 = V3;
+    end
+
+An additional helper function named ReducedDensity.m is used to calculate the reduced density matrix and thereby, effectively remove the additional qubit.
+
+.. code-block:: matlab
+
+    function [rdensity] = ReducedDensity(densityi,size,targets)
+    % This function takes the density matrix densityi composed of size qubits
+    % and calculates the reduced density matrix for the qubits given by targets
+    % and returns this reduced density matrix as rdensity
+    %%%
+    % Determine the number of qubits that compose targets
+    nq = length(targets);
+    % Determine the number of qubits in densityi that are not going to compose
+    % the outputted reduced density matrix
+    nq2 = size - nq;
+    % Initialize the matrix that will store the reduced density matrix
+    redden = zeros(2^nq);
+    % Iterate over all possible configurations of the qubits that will not
+    % compose the reduced density matrix
+    for i = 0:(2^nq2-1)
+        % Express the number for the current iteration as a bitstring of length
+        % nq2
+        const = dec2bin(i);
+        const2 = nq2 - length(const);
+        for j = 1:const2
+            const = ['0' const];
+        end
+        % count is used to determine how far across the bitstring we have gone
+        % when using the information in the bitstring to generate the matrix
+        % opmat that will be used to create the reduced density matrix.
+        count = 0;
+        % If 1 is an entry of targets, then make the first matrix that composes
+        % the set of Kronecker products that generates opmat be the 2 by 2
+        % identity matrix
+        if sum(1==targets)
+            opmat = eye(2);
+        else
+        % Otherwise make the first matrix that composes this set of Kronecker
+        % products be the appropriate single qubit spin vector
+            count = count+1;
+            if (const(count)=='1')
+                opmat = [0; 1];
+            else
+                opmat = [1; 0];
+            end
+        end
+        % Iterate through all of the rest of the qubits (both the target qubits
+        % for the reduced density matrix as well as all of the other qubits)
+        % and determine whether the next matrix in the set of Kronecker
+        % products should be an identity matrix or the spin up or down state
+        % vector. If the qubit of interest is a target qubit for the reduced
+        % density matrix then use the identity matrix otherwise use the
+        % appropriate state vector.
+        for j = 2:size
+            if sum(j==targets)
+                opmat = kron(opmat,eye(2));
+            else
+                count = count + 1;
+                if (const(count)=='1')
+                    opmat = kron(opmat,[0; 1]);
+                else
+                    opmat = kron(opmat,[1; 0]);
+                end
+            end
+        end
+        % Use opmat to perform operations on densityi in order to obtain the
+        % appropriate information about the reduced density matrix and add this
+        % information to redden.
+        redden = redden + ctranspose(opmat)*densityi*opmat;
+    end
+    % Normalize redden
+    redden = redden/trace(abs(redden));
+    % Return the reduced density matrix as rdensity
+    rdensity = redden;
+    end
