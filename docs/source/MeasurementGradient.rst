@@ -103,9 +103,9 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     probvec = [1/10^3 1/10^2 1/10 1];
     % Determine the number of times per driving step that the presence of a
     % particle is measured for a single site
-    measint = 1000;
+    measint = 100;
     % The following if else statements determines how the time evolution takes
-    % place
+    % place depending on the size of measint
     if (measint<1)
         timeinterupt = '0';
     else
@@ -125,7 +125,8 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     N = max(NVec);
     rng('shuffle');
     % The following generates the Hamiltonians for each of the five driving
-    % steps
+    % steps. The velocity matrices V1 and V3 are irrelevent for this
+    % particular calculation.
     [H1, H2, H3, H4, H5, V1, V3] = FastTwoDxyHamiltonians(Li,Lj,J,del);
     % Set up the wave function
     W = eye(LSquared);
@@ -156,7 +157,8 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     % calculate the probability of the particle occupying each of the sites
     sitexpectations = zeros(2^(ntimes*nqubits),2^(ntimes*nqubits),2+2*(Li-1)+2*Li*(Lj-1));
     % The following pretty much does the same thing but adds an extra dimension
-    % to sort the projection operators according to the y-indices
+    % to sort the projection operators according to the y-indices. jvales is actually
+    % used to store the wave functions of the relevant y-index.
     jvals = zeros(2^(ntimes*nqubits),round(2^(ntimes*nqubits)/Lj),Lj);
     for j = 0:(Lj-1)
         saph = 0;
@@ -690,7 +692,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     end
                     density = unitnow*density*ctranspose(unitnow);
                 end
-                % After the appropriate driving steps, implement the
+                % After the appropriate number of driving steps, implement the
                 % wave function collapse operations
                 if (mod(aph,measint2)==0)
                     % Calculate the eigenvectors V and the eigenvalues I of the
