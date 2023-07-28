@@ -441,6 +441,8 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     end
                     density = unitnow*density*ctranspose(unitnow);
                 end
+                % If the entanglement operations are supposed to be implemented
+                % this iteration
                 if (mod(aph,measint2)==0)
                    % Draw a random number to determine probabilities
                    draw = rand;
