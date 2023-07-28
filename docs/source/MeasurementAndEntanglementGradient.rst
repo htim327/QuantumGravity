@@ -129,7 +129,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     N = max(NVec);
     rng('shuffle');
     % The following generates the Hamiltonians for each of the five driving
-    % steps
+    % steps. The velocity matrices V1 and V3 are not useful for this calculation.
     [H1, H2, H3, H4, H5, V1, V3] = FastTwoDxyHamiltonians(Li,Lj,J,del);
     % Set up the wave function
     W = eye(LSquared);
@@ -173,9 +173,6 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     % The following matrix stores all of the control operations that flip the
     % external qubit if a qubit is present at a particular site
     measmats = zeros(2^(ntimes*nqubits+1),2^(ntimes*nqubits+1),2*Li*Lj);
-    % The following vector stores where the site that becomes entangled with
-    % the external qubit changes its y-index value.
-    numvec = [];
     for j = (Lj-1):(-1):0
         for i = 0:(Li-1)
             aph = aph + 1;
@@ -203,7 +200,6 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
             % external qubit, otherwise leave the external qubit alone.
             measmats(:,:,2+2*i+2*Li*j) = measmats(:,:,2+2*i+2*Li*j) + kron(locmat,[0 1; 1 0]) + kron(notlocmat,[1 0; 0 1]);
         end
-        numvec = [numvec aph];
     end
     % Time evolve the system that is unaffected by wave function collapse and
     % entanglement
@@ -269,7 +265,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     % system only have a population at the site of interest.
                     if (rand<probs)
                         V2 = zeros(2^nqubits);
-                        % Iterate over all of the eigenvectors and the location
+                        % Iterate over all of the eigenvectors and set the location
                         % corresponding to the site of interest to one.
                         for ti2 = 1:2^nqubits
                             V2(tk+2*ti+2*Li*(cnow-1),ti2) = V(tk+2*ti+2*Li*(cnow-1),ti2);
@@ -380,7 +376,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     % system only have a population at the site of interest.
                     if (rand<probs)
                         V2 = zeros(2^nqubits);
-                        % Iterate over all of the eigenvectors and the location
+                        % Iterate over all of the eigenvectors and set the location
                         % corresponding to the site of interest to one.
                         for ti2 = 1:2^nqubits
                             V2(tk+2*ti+2*Li*(cnow-1),ti2) = V(tk+2*ti+2*Li*(cnow-1),ti2);
@@ -491,7 +487,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     % system only have a population at the site of interest.
                     if (rand<probs)
                         V2 = zeros(2^nqubits);
-                        % Iterate over all of the eigenvectors and the location
+                        % Iterate over all of the eigenvectors and set the location
                         % corresponding to the site of interest to one.
                         for ti2 = 1:2^nqubits
                             V2(tk+2*ti+2*Li*(cnow-1),ti2) = V(tk+2*ti+2*Li*(cnow-1),ti2);
@@ -602,7 +598,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     % system only have a population at the site of interest.
                     if (rand<probs)
                         V2 = zeros(2^nqubits);
-                        % Iterate over all of the eigenvectors and the location
+                        % Iterate over all of the eigenvectors and set the location
                         % corresponding to the site of interest to one.
                         for ti2 = 1:2^nqubits
                             V2(tk+2*ti+2*Li*(cnow-1),ti2) = V(tk+2*ti+2*Li*(cnow-1),ti2);
@@ -713,7 +709,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     % system only have a population at the site of interest.
                     if (rand<probs)
                         V2 = zeros(2^nqubits);
-                        % Iterate over all of the eigenvectors and the location
+                        % Iterate over all of the eigenvectors and set the location
                         % corresponding to the site of interest to one.
                         for ti2 = 1:2^nqubits
                             V2(tk+2*ti+2*Li*(cnow-1),ti2) = V(tk+2*ti+2*Li*(cnow-1),ti2);
@@ -866,7 +862,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     % system only have a population at the site of interest.
                     if (rand<probs)
                         V2 = zeros(2^nqubits);
-                        % Iterate over all of the eigenvectors and the location
+                        % Iterate over all of the eigenvectors and set the location
                         % corresponding to the site of interest to one.
                         for ti2 = 1:2^nqubits
                             V2(tk+2*ti+2*Li*(cnow-1),ti2) = V(tk+2*ti+2*Li*(cnow-1),ti2);
