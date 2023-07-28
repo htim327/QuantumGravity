@@ -52,11 +52,11 @@ As is stated in the title, the code presented below tests the model where the li
    % y-indices for each of the driving cycles for the system where
    % entanglement operations are implemented
    jprobs2ave = zeros(NTime,4);
-   % Calculate the standard deviation associated with the particle occupying
+   % Calculate the standard error associated with the particle occupying
    % each of the y-indices for each of the driving cycles for the system
    % unaffected by entanglement operations
    jprobs1std = zeros(NTime,4);
-   % Calculate the standard deviation associated with the particle occupying
+   % Calculate the standard error associated with the particle occupying
    % each of the y-indices for each of the driving cycles for the system
    % where entanglement are implemented
    jprobs2std = zeros(NTime,4);
