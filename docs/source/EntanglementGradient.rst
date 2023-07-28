@@ -90,11 +90,11 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     LSquared = 2*Li*Lj;
     % Determine how many qubits are needed to define this system
     nqubits = log2(LSquared);
-    % Determine the frequency with which wave function collapse occurs for
-    % y-indices 0, 1, 2, and 3
+    % Determine the frequency with which entanglement operations
+    % occur for y-indices 0, 1, 2, and 3
     entprob = [1/10^3 1/10^2 1/10 1];
     % Determine the number of times per driving step that the presence of a
-    % particle is measured for a single site
+    % particle is entangled for a single site
     measint = 100;
     % The following if else statements determines how the time evolution takes
     % place
@@ -117,7 +117,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     N = max(NVec);
     rng('shuffle');
     % The following generates the Hamiltonians for each of the five driving
-    % steps
+    % steps. The velocity matrices V1 and V3 can be ignored.
     [H1, H2, H3, H4, H5, V1, V3] = FastTwoDxyHamiltonians(Li,Lj,J,del);
     % Set up the wave function
     W = eye(LSquared);
@@ -147,9 +147,6 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     % The following matrix stores all of the control operations that flip the
     % external qubit if a qubit is present at a particular site
     measmats = zeros(2^(ntimes*nqubits+1),2^(ntimes*nqubits+1),2*Li*Lj);
-    % The following vector stores where the site that becomes entangled with
-    % the external qubit changes its y-index value.
-    numvec = [];
     for j = (Lj-1):(-1):0
         for i = 0:(Li-1)
             aph = aph + 1;
@@ -177,7 +174,6 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
             % external qubit, otherwise leave the external qubit alone.
             measmats(:,:,2+2*i+2*Li*j) = measmats(:,:,2+2*i+2*Li*j) + kron(locmat,[0 1; 1 0]) + kron(notlocmat,[1 0; 0 1]);
         end
-        numvec = [numvec aph];
     end
     % Stores how many sites are in the system
     num = aph;
@@ -208,16 +204,19 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     end
     if (timeinterupt=='1')
         for z = 1:N
+            % Divide the time evolution of the first driving step into time steps
             unitnow = expm(-1i*(H1)*(1+TimeDisorder1(z))*2*pi/(5*measint));
             for t = 2:ntimes
                 unitnow = kron(unitnow,expm(-1i*(H1)*(1+TimeDisorder1(z))*2*pi/(5*measint)));
             end
+            % Iterate over all of the time steps
             for t = 1:measint
+                % Evolve the system one time step
                 density = unitnow*density*ctranspose(unitnow);
                 % Draw a random number to determine probabilities
                 draw = rand;
                 for t2 = 1:length(entprob)
-                    % If draw is less than the probvec value of the current
+                    % If draw is less than the entprob value of the current
                     % iteration, set the y-index value of interest according to
                     % the current value of t2.
                     if (draw<entprob(t2))
@@ -241,16 +240,19 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                 end
             end
             %%%
+            % Divide the time evolution of the second driving step into time steps
             unitnow = expm(-1i*(H2)*(1+TimeDisorder2(z))*2*pi/(5*measint));
             for t = 2:ntimes
                 unitnow = kron(unitnow,expm(-1i*(H2)*(1+TimeDisorder2(z))*2*pi/(5*measint)));
             end
+            % Iterate over all of the time steps
             for t = 1:measint
+                % Evolve the system one time step
                 density = unitnow*density*ctranspose(unitnow);
                 % Draw a random number to determine probabilities
                 draw = rand;
                 for t2 = 1:length(entprob)
-                    % If draw is less than the probvec value of the current
+                    % If draw is less than the entprob value of the current
                     % iteration, set the y-index value of interest according to
                     % the current value of t2.
                     if (draw<entprob(t2))
@@ -274,16 +276,19 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                 end
             end
             %%%
+            % Divide the time evolution of the third driving step into time steps
             unitnow = expm(-1i*(H3)*(1+TimeDisorder3(z))*2*pi/(5*measint));
             for t = 2:ntimes
                 unitnow = kron(unitnow,expm(-1i*(H3)*(1+TimeDisorder3(z))*2*pi/(5*measint)));
             end
+            % Iterate over all of the time steps
             for t = 1:measint
+                % Evolve the system one time step
                 density = unitnow*density*ctranspose(unitnow);
                 % Draw a random number to determine probabilities
                 draw = rand;
                 for t2 = 1:length(entprob)
-                    % If draw is less than the probvec value of the current
+                    % If draw is less than the entprob value of the current
                     % iteration, set the y-index value of interest according to
                     % the current value of t2.
                     if (draw<entprob(t2))
@@ -307,16 +312,19 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                 end
             end
             %%%
+            % Divide the time evolution of the fourth driving step into time steps
             unitnow = expm(-1i*(H4)*(1+TimeDisorder4(z))*2*pi/(5*measint));
             for t = 2:ntimes
                 unitnow = kron(unitnow,expm(-1i*(H4)*(1+TimeDisorder4(z))*2*pi/(5*measint)));
             end
+            % Iterate over all of the time steps
             for t = 1:measint
+                % Evolve the system one time step
                 density = unitnow*density*ctranspose(unitnow);
                 % Draw a random number to determine probabilities
                 draw = rand;
                 for t2 = 1:length(entprob)
-                    % If draw is less than the probvec value of the current
+                    % If draw is less than the entprob value of the current
                     % iteration, set the y-index value of interest according to
                     % the current value of t2.
                     if (draw<entprob(t2))
@@ -340,16 +348,19 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                 end
             end
             %%%
+            % Divide the time evolution of the fifth driving step into time steps
             unitnow = expm(-1i*(H5)*(1+TimeDisorder5(z))*2*pi/(5*measint));
             for t = 2:ntimes
                 unitnow = kron(unitnow,expm(-1i*(H5)*(1+TimeDisorder5(z))*2*pi/(5*measint)));
             end
+            % Iterate over all of the time steps
             for t = 1:measint
+                % Evolve the system one time step
                 density = unitnow*density*ctranspose(unitnow);
                 % Draw a random number to determine probabilities
                 draw = rand;
                 for t2 = 1:length(entprob)
-                    % If draw is less than the probvec value of the current
+                    % If draw is less than the entprob value of the current
                     % iteration, set the y-index value of interest according to
                     % the current value of t2.
                     if (draw<entprob(t2))
@@ -430,30 +441,32 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                     end
                     density = unitnow*density*ctranspose(unitnow);
                 end
-                % Draw a random number to determine probabilities
-                draw = rand;
-                for t2 = 1:length(entprob)
-                    % If draw is less than the probvec value of the current
-                    % iteration, set the y-index value of interest according to
-                    % the current value of t2.
-                    if (draw<entprob(t2))
-                        cnow = t2;
-                        break;
-                    end
-                end
-                % Iterate over all sites that have the y-index of interest and
-                % for all of those sites, add an external qubit. Then, if the
-                % particle is present at the site of interest, flip the
-                % external qubit from the spin down state to the spin up state.
-                % Finally, remove the external qubit by calculating the reduced
-                % density matrix.
-                for ti = 0:(Li-1)
-                    for tk = 1:2
-                        density = kron(density,[1 0; 0 0]);
-                        density = measmats(:,:,tk+2*ti+2*Li*(cnow-1))*density*ctranspose(measmats(:,:,tk+2*ti+2*Li*(cnow-1)));
-                        [rdensity] = ReducedDensity(density,ntimes*nqubits+1,1:(ntimes*nqubits));
-                        density = rdensity;
-                    end
+                if (mod(aph,measint2)==0)
+                   % Draw a random number to determine probabilities
+                   draw = rand;
+                   for t2 = 1:length(entprob)
+                       % If draw is less than the entprob value of the current
+                       % iteration, set the y-index value of interest according to
+                       % the current value of t2.
+                       if (draw<entprob(t2))
+                           cnow = t2;
+                           break;
+                       end
+                   end
+                   % Iterate over all sites that have the y-index of interest and
+                   % for all of those sites, add an external qubit. Then, if the
+                   % particle is present at the site of interest, flip the
+                   % external qubit from the spin down state to the spin up state.
+                   % Finally, remove the external qubit by calculating the reduced
+                   % density matrix.
+                   for ti = 0:(Li-1)
+                       for tk = 1:2
+                           density = kron(density,[1 0; 0 0]);
+                           density = measmats(:,:,tk+2*ti+2*Li*(cnow-1))*density*ctranspose(measmats(:,:,tk+2*ti+2*Li*(cnow-1)));
+                           [rdensity] = ReducedDensity(density,ntimes*nqubits+1,1:(ntimes*nqubits));
+                           density = rdensity;
+                       end
+                   end
                 end
                 % If the current iteration is for the fifth driving step,
                 % calculate the probability for the particle to occupy each of
