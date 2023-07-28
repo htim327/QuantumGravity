@@ -60,11 +60,11 @@ The following code presents a method where the time evolution of each driving st
    % y-indices for each of the driving cycles for the system where
    % entanglement and wave function collapse operations are implemented
    jprobs2ave = zeros(NTime,Lj);
-   % Calculate the standard deviation associated with the particle occupying
+   % Calculate the standard error associated with the particle occupying
    % each of the y-indices for each of the driving cycles for the system
    % unaffected by entanglement and wave function collapse
    jprobs1std = zeros(NTime,Lj);
-   % Calculate the standard deviation associated with the particle occupying
+   % Calculate the standard error associated with the particle occupying
    % each of the y-indices for each of the driving cycles for the system
    % where entanglement and wave function collapse operations are implemented
    jprobs2std = zeros(NTime,Lj);
@@ -78,7 +78,7 @@ The following code presents a method where the time evolution of each driving st
    end
    % Plot the curves associated with the probability of the particle to occupy
    % each of the y-indices for both the systems that are affected and
-   % unaffected by the entanglement operations
+   % unaffected by the entanglement and wave function collapse operations
    for i = 1:Lj
        figure('units','normalized','outerposition',[0 0 1 1]);
        errorbar(1:NTime,jprobs1ave(:,i),jprobs1std(:,i),'Color','b')
