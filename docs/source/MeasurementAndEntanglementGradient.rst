@@ -2,7 +2,7 @@
 Presentation of the Code that Tests the Model that Uses a Gradient that Determines How Often the Particle is both Entangled and has its Wave Function Collapse
 ==============================================================================================================================================================
 
-The following code presents a method where the time evolution of each driving step is divided into a series of time steps. After each time step, the algorithm undergoes a series of iterations where during each iteration, the particle has its wave function collapse to a single site if the particle is located at a site of interest that is randomly chosen and then the particle is entangled with an external qubit if the particle is present at another randomly chosen site of interest. For both of these process, a random value of the y-index is obtained (separately for each process) where a y-index is more likely to be chosen if it has a higher value with the minimum value being zero. In addition, both of these processes separately calculate a random value for the x-index and :math:`$\alpha$` using a uniform distribution. The number of iterations was arbitrarily chosen to be equal to the number of sites of the system. For the entanglement process, first an external qubit is added. Then if the particle is present at the site of interest, the external qubit is flipped from spin down to spin up. Finally, the particle is effectively removed by calculating the reduced density matrix. For the wave function collapse process, first the eigenvalues and eigenvectors of the relevant density matrix are calculated and the probability for the particle to occupy the site of interest is calculated. Then a random number generator is used along with the probability calculated to determine whether to set the entry corresponding to the site of interest to zero or to set all of the other entries to zero. Then a new density matrix is calculated using the eigenvalues and the new eigenvectors and the new density matrix is also normalized. The main MATLAB file that runs the sub-files that obtain the data and plots the resulting data is given below:
+The following code presents a method where the time evolution of each driving step is divided into a series of time steps. After each time step, the algorithm undergoes a series of iterations where during each iteration, the particle has its wave function collapse to a single site if the particle is located at a site of interest that is randomly chosen and then the particle is entangled with an external qubit if the particle is present at another randomly chosen site of interest. For both of these processes, a random value of the y-index is obtained (separately for each process) where a y-index is more likely to be chosen if it has a higher value with the minimum value being zero. In addition, both of these processes separately calculate a random value for the x-index and :math:`$\alpha$` using a uniform distribution. The number of iterations was arbitrarily chosen to be equal to the number of sites of the system. For the entanglement process, first an external qubit is added. Then if the particle is present at the site of interest, the external qubit is flipped from spin down to spin up. Finally, the particle is effectively removed by calculating the reduced density matrix. For the wave function collapse process, first the eigenvalues and eigenvectors of the relevant density matrix are calculated and the probability for the particle to occupy the site of interest is calculated. Then a random number generator is used along with the probability calculated to determine whether to set the entry corresponding to the site of interest to zero or to set all of the other entries to zero. Then a new density matrix is calculated using the eigenvalues and the new eigenvectors and the new density matrix is also normalized. The main MATLAB file that runs the sub-files that obtains the data and plots the resulting data is given below:
 
 .. code-block:: matlab
 
@@ -21,7 +21,7 @@ The following code presents a method where the time evolution of each driving st
    numsites = 2+2*(Li-1)+2*Li*(Lj-1);
    % Calculate the number of sites for every value of the y-index
    numj = round(numsites/Lj);
-   % Store the probability of the particle occupying each of the j-indices for
+   % Store the probability of the particle occupying each of the y-indices for
    % each driving step and each noise realization for the system unaffected by
    % entanglement and wave function collapse
    jprobs1 = zeros(NTot,NTime,Lj);
@@ -104,9 +104,9 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     % Determine the frequency with which entanglement with an external particle
     % occurs for y-indices 0, 1, 2, and 3
     entprob = [1/10^3 1/10^2 1/10 1];
-    % Determine the number of times per driving step that a single site is
-    % entangled with an external particle and the presence of a particle is
-    % measured for a single site
+    % Determine the number of times per driving step that the iterative process
+    % that executes the entanglement and wave function collapse operations is
+    % implemented for.
     measint = 100;
     % The following if else statements determines how the time evolution takes
     % place
@@ -148,11 +148,11 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     TimeDisorder5 = [-1 TimeDisorder5];
     wave2 = wave;
     % The following matrix stores information regarding the probability of the
-    % particle occupying each sites for the reference system unaffected by
+    % particle occupying each site for the reference system unaffected by
     % entanglement or wave function collapse
     jprobsa = zeros(1,2+2*(Li-1)+2*Li*(Lj-1),N);
     % The following matrix stores information regarding the probability of the
-    % particle occupying each sites for the system where entanglement and wave
+    % particle occupying each site for the system where entanglement and wave
     % function collapse are involved
     jprobsb = zeros(1,2+2*(Li-1)+2*Li*(Lj-1),N);
     aph = 0;
@@ -969,7 +969,7 @@ This uses the function FastTwoDxyHamiltonians.m, which generates the Hamiltonian
     V1 = Muy;
     V3 = Muy;
     % Populate all of the Hamiltonians and the velocity matrices in the
-    % appropriate locations such that they perform that actions they were
+    % appropriate locations such that they perform the actions they were
     % intended to.
     for i = 2:2:LSquared
         H1(i,(i-1)) = -J;
