@@ -663,28 +663,28 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
                         unitnow = kron(unitnow,expm(-1i*(H1)*(1+TimeDisorder1(z))*2*pi/5));
                     end
                     density = unitnow*density*ctranspose(unitnow);
-                % Implement the first driving step if z2==2
+                % Implement the second driving step if z2==2
                 elseif (z2==2)
                     unitnow = expm(-1i*(H2)*(1+TimeDisorder2(z))*2*pi/5);
                     for z3 = 2:ntimes
                         unitnow = kron(unitnow,expm(-1i*(H2)*(1+TimeDisorder2(z))*2*pi/5));
                     end
                     density = unitnow*density*ctranspose(unitnow);
-                % Implement the first driving step if z2==3
+                % Implement the third driving step if z2==3
                 elseif (z2==3)
                     unitnow = expm(-1i*(H3)*(1+TimeDisorder3(z))*2*pi/5);
                     for z3 = 2:ntimes
                         unitnow = kron(unitnow,expm(-1i*(H3)*(1+TimeDisorder3(z))*2*pi/5));
                     end
                     density = unitnow*density*ctranspose(unitnow);
-                % Implement the first driving step if z2==4
+                % Implement the fourth driving step if z2==4
                 elseif (z2==4)
                     unitnow = expm(-1i*(H4)*(1+TimeDisorder4(z))*2*pi/5);
                     for z3 = 2:ntimes
                         unitnow = kron(unitnow,expm(-1i*(H4)*(1+TimeDisorder4(z))*2*pi/5));
                     end
                     density = unitnow*density*ctranspose(unitnow);
-                % Implement the first driving step if z2==5
+                % Implement the fifth driving step if z2==5
                 elseif (z2==5)
                     unitnow = expm(-1i*(H5)*(1+TimeDisorder5(z))*2*pi/5);
                     for z3 = 2:ntimes
