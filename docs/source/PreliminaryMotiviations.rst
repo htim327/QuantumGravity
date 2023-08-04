@@ -2,7 +2,7 @@
 Preliminary Motivations for 'Quantum Gravity' Research
 ======================================================
 
-This documentation presents, as the title says, the preliminary motivations for this research on quantum gravity. This code allows for the storage of a set of single qubits in a vector that is much more compressed than it otherwise would be. This works by having a series of control qubits and a single target qubit that store the information of these single qubits. If there is a single control qubit, then the total wave function can store the information of two single qubits according to:
+This documentation presents, as the title says, the preliminary motivations for this research on quantum gravity. This code allows for the storage of a set of single qubits in a vector that is much more compressed than it otherwise would be. This works by having a series of control qubits and a single target qubit store the information of these single qubits. If there is a single control qubit, then the total wave function that can store the information of two single qubits becomes:
 
 :math:`$$\Psi_{\mathrm{tot}}^T = [1\ 0]\otimes [a\ b] + [0\ 1]\otimes [c\ d] = [a\ b\ c\ d]$$`
 
@@ -10,7 +10,7 @@ Meanwhile, if there are two control qubits, the total wave function becomes:
 
 :math:`$$\Psi_{\mathrm{tot}}^T = [1\ 0\ 0\ 0]\otimes [a\ b] + [0\ 1\ 0\ 0]\otimes [c\ d] + [0\ 0\ 1\ 0]\otimes [e\ f] + [0\ 0\ 0\ 1]\otimes [g\ h] = [a\ b\ c\ d\ e\ f\ g\ h]$$`
 
-Therefore, as the number of 'compressed' qubits (n) stored in this wave function grows by a factor of two, the size of wave function grows by a factor of :math:`$2\times n$` as opposed to the normal :math:`$2^{n}$` for the normal storage of qubits in a wave function. The other interesting aspect to this is that as the number control qubits grows, the number of shots needed to gain the same accuracy of the measurement results grows by a factor two. So while, in a normal ket of unentangled qubits where the number of shots needed to obtain a certain degree of accuracy scales by a factor of one (whatever that means), the number of shots needed to obtain the same accuracy with these 'compressed' qubits scales as a factor of :math:`$2^n$`. This can be seen as a kind of length contraction, where the wave function shortens to becoming of size :math:`$2\times n$` as opposed to :math:`$2^{n}$`, as well as a kind of time dilation, where the number of shots needed for a certain degree of accuracy increases by a factor of :math:`$2^n$` as opposed to the 'uncompressed qubits' that only increase by a factor of 'one'. The code for this is presented below:
+Therefore, as the number of 'compressed' qubits (n) stored in this wave function grows by a factor of two, the size of wave function grows by a factor of :math:`$2\times n$` as opposed to the normal :math:`$2^{n}$` for the normal storage of qubits in a wave function. The other interesting aspect to this is that as the number control qubits grows, the number of shots needed to gain the same accuracy of the measurement results grows by around the same factor. So while, in a normal ket of unentangled qubits where the number of shots needed to obtain a certain degree of accuracy scales by a factor of one (whatever that means), the number of shots needed to obtain the same accuracy with these 'compressed' qubits scales as a factor of :math:`$2^n$`. This can be seen as a kind of length contraction, where the wave function shortens to becoming of size :math:`$2\times n$` as opposed to :math:`$2^{n}$`, as well as a kind of time dilation, where the number of shots needed for a certain degree of accuracy increases by a factor of :math:`$2^n$` as opposed to the 'uncompressed qubits' that only increase by a factor of 'one'. The code for this is presented below:
 
 .. code-block:: matlab
 
@@ -367,7 +367,7 @@ Meanwhile, if the number of shots for the uncompressed qubits becomes :math:`$\m
 
 .. image:: SampledProbabilityFornqubitsis3shots1is100000.png
 
-It is important to remember that these are only partial snapshots of the code expressed above. So there is another part that includes the effective shots of the compressed qubits where the effective shots are calculated with the total number of times that the wave function that stores the compressed qubits collapses to the particular compressed qubit. For the case, where :math:`$\mathrm{nqubits}=3$` and the total number of shots for the uncompressed qubits is :math:`$\mathrm{shots1} = 10000$`, the total number of effective shots for the compressed qubits (with the total number of shots for the uncompressed qubits expressed at the very bottom) becomes:
+It is important to remember that these are only partial snapshots of the code expressed above. So there is another part that includes the effective shots of the compressed qubits where the effective shots are calculated with the total number of times that the wave function that stores the compressed qubits collapses to the particular compressed qubit. For the case where :math:`$\mathrm{nqubits}=3$` and the total number of shots for the uncompressed qubits is :math:`$\mathrm{shots1} = 10000$`, the total number of effective shots for the compressed qubits (with the total number of shots for the uncompressed qubits expressed at the very bottom) becomes:
 
 .. image:: ShotsFornqubitsis3shots1is10000.png
 
