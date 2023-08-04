@@ -812,7 +812,7 @@ This uses the function FastTwoDxyHamiltonians.m, which generates the Hamiltonian
     V1 = Muy;
     V3 = Muy;
     % Populate all of the Hamiltonians and the velocity matrices in the
-    % appropriate locations such that they perform that actions they were
+    % appropriate locations such that they perform the actions they were
     % intended to.
     for i = 2:2:LSquared
         H1(i,(i-1)) = -J;
