@@ -13,7 +13,7 @@ The code presented below tests the model where the likelihood of the particle lo
    % Determine the number of driving cycles you want to use
    NTime = 1000;
    save('NTime.mat','NTime')
-   % Store the probability of the particle occupying each of the j-indices for
+   % Store the probability of the particle occupying each of the y-indices for
    % each driving step and each noise realization for the system unaffected by
    % entanglement operations
    jprobs1 = zeros(NTot,NTime,4);
@@ -58,7 +58,7 @@ The code presented below tests the model where the likelihood of the particle lo
    jprobs1std = zeros(NTime,4);
    % Calculate the standard error associated with the particle occupying
    % each of the y-indices for each of the driving cycles for the system
-   % where entanglement are implemented
+   % where entanglement operations are implemented
    jprobs2std = zeros(NTime,4);
    for i = 1:NTime
        for j = 1:4
