@@ -21,7 +21,7 @@ The code presented below tests the model where the likelihood of the particle lo
    numsites = 2+2*(Li-1)+2*Li*(Lj-1);
    % Calculate the number of sites for every value of the y-index
    numj = round(numsites/Lj);
-   % Store the probability of the particle occupying each of the j-indices for
+   % Store the probability of the particle occupying each of the y-indices for
    % each driving step and each noise realization for the system unaffected by
    % wave function collapse operations
    jprobs1 = zeros(NTot,NTime,Lj);
@@ -158,7 +158,7 @@ The code above runs TwoDimxyQ.m, which is the main file that actually runs the s
     sitexpectations = zeros(2^(ntimes*nqubits),2^(ntimes*nqubits),2+2*(Li-1)+2*Li*(Lj-1));
     % The following pretty much does the same thing but adds an extra dimension
     % to sort the projection operators according to the y-indices. jvales is actually
-    % used to store the wave functions of the relevant y-index.
+    % used to store the wave functions classified by the relevant y-index.
     jvals = zeros(2^(ntimes*nqubits),round(2^(ntimes*nqubits)/Lj),Lj);
     for j = 0:(Lj-1)
         saph = 0;
